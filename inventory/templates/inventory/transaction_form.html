@@ -1,0 +1,30 @@
+<h1>Thêm giao dịch</h1>
+<form method="post">
+    {% csrf_token %}
+    <div>
+        <label for="{{ form.product.id_for_label }}">Sản phẩm:</label>
+        {{ form.product }}
+    </div>
+    <div>
+        <label for="{{ form.unit.id_for_label }}">Đơn vị:</label>
+        {{ form.unit }}
+    </div>
+    <div>
+        {{ form.quantity }}
+        {{ form.transaction_type }}
+    </div>
+    <button type="submit">Lưu</button>
+</form>
+
+<script>
+    document.getElementById('{{ form.product.id_for_label }}').addEventListener('change', function () {
+        const productId = this.value;
+        fetch(`http://127.0.0.1:8000/inventory/get-units/?product_id=${productId}`)
+            .then(response => response.text())
+            .then(data => {
+                const unitSelect = document.getElementById('{{ form.unit.id_for_label }}');
+                console.log(unitSelect);
+                unitSelect.innerHTML = data;  // Cập nhật danh sách unit
+            });
+    });
+</script>

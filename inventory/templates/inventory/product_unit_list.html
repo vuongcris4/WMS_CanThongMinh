@@ -1,0 +1,7 @@
+<h1>Danh sách đơn vị tính của sản phẩm</h1>
+<a href="{% url 'product_unit_create' %}">Thêm đơn vị cho sản phẩm</a>
+<ul>
+    {% for product_unit in product_units %}
+        <li>{{ product_unit.product.name }} - {{ product_unit.unit.name }} - Hệ số: {{ product_unit.conversion_factor }}</li>
+    {% endfor %}
+</ul>

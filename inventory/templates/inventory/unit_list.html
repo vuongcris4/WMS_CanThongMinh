@@ -1,0 +1,7 @@
+<h1>Danh sách đơn vị tính</h1>
+<a href="{% url 'unit_create' %}">Thêm đơn vị</a>
+<ul>
+    {% for unit in units %}
+        <li>{{ unit.name }}</li>
+    {% endfor %}
+</ul>
