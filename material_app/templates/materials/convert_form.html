@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Quy đổi đơn vị cho {{ material.name }}</h1>
+    <form method="POST" hx-post="{% url 'convert_unit' material.id %}" hx-target="#convert-result">
+        <input type="number" name="quantity" placeholder="Số lượng">
+        <select name="from_unit">
+            {% for mu in units %}
+            <option value="{{ mu.unit.id }}">{{ mu.unit.name }}</option>
+            {% endfor %}
+        </select>
+        <select name="to_unit">
+            {% for mu in units %}
+            <option value="{{ mu.unit.id }}">{{ mu.unit.name }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Quy đổi</button>
+    </form>
+    <div id="convert-result"></div>
+{% endblock %}

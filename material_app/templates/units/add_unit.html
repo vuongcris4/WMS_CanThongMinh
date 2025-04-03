@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Thêm đơn vị</h1>
+    <form method="POST" hx-post="{% url 'add_unit' %}" hx-target="#unit-list" hx-swap="innerHTML">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Thêm</button>
+    </form>
+    <br>
+
+    <h2>Danh sách đơn vị</h2>
+    <div id="unit-list">
+        {% include 'units/unit_list.html' %}
+    </div>
+{% endblock %}

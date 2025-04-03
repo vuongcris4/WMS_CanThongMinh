@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Lịch sử giao dịch</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Nguyên vật liệu</th>
+                <th>Số lượng</th>
+                <th>Đơn vị</th>
+                <th>Loại</th>
+                <th>Thời gian</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for t in transactions %}
+            <tr>
+                <td>{{ t.materialId.name }}</td>
+                <td>{{ t.quantity }}</td>
+                <td>{{ t.unitId.name }}</td>
+                <td>{{ t.transaction_type }}</td>
+                <td>{{ t.created_at }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

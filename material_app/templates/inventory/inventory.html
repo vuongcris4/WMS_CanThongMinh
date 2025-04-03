@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Tồn kho</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Tên</th>
+                <th>Tồn kho</th>
+                <th>Đơn vị</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in inventory_data %}
+            <tr>
+                <td>{{ item.material.name }}</td>
+                <td id="quantity-{{ item.material.id }}">{{ item.base_quantity }}</td>
+                <td>
+                    <select hx-post="{% url 'change_unit' item.material.id %}" hx-target="#quantity-{{ item.material.id }}">
+                        {% for mu in item.units %}
+                        <option value="{{ mu.unitId.id }}">{{ mu.unitId.name }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'add_transaction' %}">Thêm giao dịch</a>
+    <a href="{% url 'transaction_history' %}">Lịch sử giao dịch</a>
+{% endblock %}

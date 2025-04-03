@@ -1,7 +1,0 @@
-<h1>Danh sách giao dịch</h1>
-<a href="{% url 'transaction_create' %}">Thêm giao dịch</a>
-<ul>
-    {% for transaction in transactions %}
-        <li>{{ transaction.product.name }} - {{ transaction.transaction_type }} - {{ transaction.quantity }} {{ transaction.unit.name }}</li>
-    {% endfor %}
-</ul>

@@ -1,7 +1,0 @@
-<h1>Danh sách sản phẩm</h1>
-<a href="{% url 'product_create' %}">Thêm sản phẩm</a>
-<ul>
-    {% for product in products %}
-        <li>{{ product.id }}  {{ product.name }} - Đơn vị cơ sở: {{ product.base_unit.name }}</li>
-    {% endfor %}
-</ul>
