@@ -2,19 +2,24 @@
 
 {% block content %}
     <h1>Thêm giao dịch</h1>
-{#    <form method="POST" hx-post="{% url 'add_transaction' %}" hx-target="#inventory">#}
     <form method="POST">
-        <select name="material" hx-get="{% url 'get_units' material_id=0 %}" hx-target="#unit-select" hx-swap="innerHTML">
-            {% for m in materials %}
-            <option value="{{ m.id }}" hx-get="{% url 'get_units' m.id %}">{{ m.name }}</option>
-            {% endfor %}
-        </select>
-        <select name="unit" id="unit-select"></select>
-        <input type="number" name="quantity" placeholder="Số lượng">
-        <select name="transaction_type">
-            <option value="import">Nhập</option>
-            <option value="export">Xuất</option>
-        </select>
-        <button type="submit">Thêm</button>
+        {% csrf_token %}
+        <div>
+            <label for="{{ form.materialId.id_for_label }}">Nguyên vâật liệu:</label>
+            {{ form.materialId }}
+        </div>
+         <div>
+            <label for="{{ form.unitId.id_for_label }}">Đơn vị:</label>
+            {{ form.unitId }}
+        </div>
+         <div>
+            <label for="{{ form.quantity.id_for_label }}">Số lượng:</label>
+            {{ form.quantity }}
+        </div>
+         <div>
+            <label for="{{ form.transaction_type.id_for_label }}">Loại giao dịch:</label>
+            {{ form.transaction_type }}
+        </div>
+        <button type="submit">Lưu</button>
     </form>
 {% endblock %}

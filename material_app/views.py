@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Material, Unit, MaterialUnit, MaterialTransactions
-from .forms import MaterialForm, UnitForm, MaterialUnitForm
+from .forms import MaterialForm, UnitForm, MaterialUnitForm, MaterialTransactionForm
 from django.db.models import Sum
 
 # Quản lý nguyên vật liệu
@@ -79,32 +79,25 @@ def change_unit(request, material_id):
     factor = MaterialUnit.objects.get(materialId=material, unitId=unit_id).conversion_factor
     quantity = base_quantity / factor
     return render(request, 'inventory/quantity.html', {'quantity': quantity})
-
-def transaction_history(request, material_id=None):
-    if material_id:
-        transactions = MaterialTransactions.objects.filter(materialId=material_id).order_by('-created_at')
-    else:
-        transactions = MaterialTransactions.objects.all().order_by('-created_at')
-    return render(request, 'inventory/transaction_history.html', {'transactions': transactions})
+#
+# def transaction_history(request, material_id=None):
+#     if material_id:
+#         transactions = MaterialTransactions.objects.filter(materialId=material_id).order_by('-created_at')
+#     else:
+#         transactions = MaterialTransactions.objects.all().order_by('-created_at')
+#     return render(request, 'inventory/transaction_history.html', {'transactions': transactions})
 
 def add_transaction(request):
     if request.method == 'POST':
-        material_id = request.POST['material']
-        unit_id = request.POST['unit']
-        quantity = float(request.POST['quantity'])
-        transaction_type = request.POST['transaction_type']
-        material = Material.objects.get(id=material_id)
-        unit = Unit.objects.get(id=unit_id)
-        factor = MaterialUnit.objects.get(materialId=material, unitId=unit).conversion_factor
-        base_quantity = quantity * factor
-        MaterialTransactions.objects.create(
-            materialId=material, unitId=unit, quantity=quantity,
-            base_quantity=base_quantity, transaction_type=transaction_type
-        )
-        return redirect('inventory')
-    materials = Material.objects.all()
-    return render(request, 'inventory/add_transaction.html', {'materials': materials})
+        form = MaterialTransactionForm(request.POST)
+        if form.is_valid():
+            form.save()  # Lưu giao dịch và tự động tính base_quantity
+            return redirect('inventory')
+    else:
+        form = MaterialTransactionForm()
+    return render(request, 'inventory/add_transaction.html', {'form': form})
 
-def get_units(request, material_id):
+def get_material_units(request, material_id):
     units = MaterialUnit.objects.filter(materialId=material_id)
-    return render(request, 'inventory/unit_options.html', {'units': units})
+    print(units)
+    return render(request, 'inventory/partial/material_units.html', {'units': units})

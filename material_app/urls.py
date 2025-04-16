@@ -19,8 +19,8 @@ urlpatterns = [
     # Nhập xuất tồn
     path('inventory/', views.inventory, name='inventory'),
     path('inventory/change_unit/<int:material_id>/', views.change_unit, name='change_unit'),
-    path('inventory/transactions/', views.transaction_history, name='transaction_history'),
-    path('inventory/transactions/<int:material_id>/', views.transaction_history, name='transaction_history_material'),
+    # path('inventory/transactions/', views.transaction_history, name='transaction_history'),
+    # path('inventory/transactions/<int:material_id>/', views.transaction_history, name='transaction_history_material'),
     path('inventory/add_transaction/', views.add_transaction, name='add_transaction'),
-    path('inventory/get_units/<int:material_id>/', views.get_units, name='get_units'),
+    path('inventory/get_material_units/<int:material_id>/', views.get_material_units, name='get_units'),
 ]
