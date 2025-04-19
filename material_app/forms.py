@@ -44,13 +44,13 @@ class MaterialTransactionForm(forms.ModelForm):
             #     'class': 'input'  # Ví dụ thêm class CSS, có thể thêm HTMX nếu cần
             # })
 
-
-
-    def save(self, commit=True):
-        instance = super().save(commit=False)
-        # Tính base_quantity dựa trên conversion_factor từ MaterialUnit
-        material_unit = MaterialUnit.objects.get(materialId=instance.materialId, unitId=instance.unitId)
-        instance.base_quantity = instance.quantity * material_unit.conversion_factor
-        if commit:
-            instance.save()
-        return instance
+    #
+    #
+    # def save(self, commit=True):
+    #     instance = super().save(commit=False)
+    #     # Tính base_quantity dựa trên conversion_factor từ MaterialUnit
+    #     material_unit = MaterialUnit.objects.get(materialId=instance.materialId, unitId=instance.unitId)
+    #     instance.base_quantity = instance.quantity * material_unit.conversion_factor
+    #     if commit:
+    #         instance.save()
+    #     return instance

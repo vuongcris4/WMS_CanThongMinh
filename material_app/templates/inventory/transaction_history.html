@@ -1,27 +1,63 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Lịch sử giao dịch</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Nguyên vật liệu</th>
-                <th>Số lượng</th>
-                <th>Đơn vị</th>
-                <th>Loại</th>
-                <th>Thời gian</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for t in transactions %}
-            <tr>
-                <td>{{ t.materialId.name }}</td>
-                <td>{{ t.quantity }}</td>
-                <td>{{ t.unitId.name }}</td>
-                <td>{{ t.transaction_type }}</td>
-                <td>{{ t.created_at }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <h1>Lịch sử nhập xuất</h1>
+
+    {#    Filter#}
+    <div>
+        <label>Loại Giao Dịch:</label>
+        <select name="transaction_type"
+                hx-get="{% url 'search_transaction_table' %}"
+                hx-trigger="change"
+                hx-target="#transaction_material_table"
+                hx-swap="outerHTML"
+                hx-include="#flatpickr-date, #search-material">
+            <option value="">-- Tất cả --</option>
+            <option value="import">Nhập</option>
+            <option value="export">Xuất</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="flatpickr-date">Chọn ngày</label>
+        <input id="flatpickr-date" name="flatpickr-date" type="text" placeholder="Select Date.." data-id="range"
+               readonly="readonly"
+               hx-get="{% url 'search_transaction_table' %}"
+               hx-trigger="change"
+               hx-target="#transaction_material_table"
+               hx-swap="outerHTML"
+               hx-include="[name='transaction_type'], #search-material">
+    </div>
+
+    <div>
+        <label for="search-material">Tìm kiếm sản phẩm</label>
+        <input id="search-material" name="search_material" type="text" placeholder="Nhập tên sp"
+               hx-get="{% url 'search_transaction_table' %}"
+               hx-trigger="keyup changed delay:200ms"
+               hx-target="#transaction_material_table"
+               hx-swap="outerHTML"
+               hx-include="[name='transaction_type'], #flatpickr-date">
+    </div>
+
+    <button id="clear-filter-btn" hx-get="{% url 'search_transaction_table' %}"
+            hx-target="#transaction_material_table"
+            hx-swap="outerHTML">
+        Clear Filter
+    </button>
+
+    <script>
+        flatpickr("#flatpickr-date", {
+            mode: "range",
+            maxDate: "today",
+            dateFormat: "d/m/y",
+        });
+
+        document.getElementById('clear-filter-btn').addEventListener('click', function () {
+            document.querySelector('select[name="transaction_type"]').value = '';
+            document.getElementById('flatpickr-date').value = '';
+            document.getElementById('search-material').value = '';
+        });
+    </script>
+
+    {% include 'inventory/partial/transaction_table.html' %}
 {% endblock %}

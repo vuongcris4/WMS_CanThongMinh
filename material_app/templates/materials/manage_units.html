@@ -11,7 +11,8 @@
     <br>
     <h2>Thêm đơn vị quy đổi cho {{ material.name }}</h2>
 
-    <form method="POST" hx-post="{% url 'manage_units' material.id %}" hx-target="#unit-list-quy-doi">
+{#    Post đến url gọi hàm manage_units, và apply cục trả về vô id #}
+    <form method="POST" hx-post="{% url 'manage_units' material.id %}" hx-target="#unit-list-quy-doi" hx-on::after-request="this.reset()">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Thêm đơn vị</button>

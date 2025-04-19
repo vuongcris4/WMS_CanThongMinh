@@ -2,7 +2,7 @@
 
 {% block content %}
     <h1>Thêm đơn vị</h1>
-    <form method="POST" hx-post="{% url 'add_unit' %}" hx-target="#unit-list" hx-swap="innerHTML">
+    <form method="POST" hx-post="{% url 'add_unit' %}" hx-target="#unit-list" hx-swap="innerHTML" hx-on::after-request="this.reset()">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Thêm</button>
@@ -13,4 +13,5 @@
     <div id="unit-list">
         {% include 'units/unit_list.html' %}
     </div>
+
 {% endblock %}

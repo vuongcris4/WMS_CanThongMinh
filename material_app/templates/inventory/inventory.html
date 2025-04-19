@@ -2,30 +2,45 @@
 
 {% block content %}
     <h1>Tồn kho</h1>
+    <a href="{% url 'add_transaction' %}">Thêm giao dịch</a>
+    <br>
     <table>
         <thead>
-            <tr>
-                <th>Tên</th>
-                <th>Tồn kho</th>
-                <th>Đơn vị</th>
-            </tr>
+        <tr>
+            <th>Tên</th>
+            <th>Tồn kho</th>
+            <th>Đơn vị</th>
+        </tr>
         </thead>
         <tbody>
-            {% for item in inventory_data %}
+        {% for material in materials %}
             <tr>
-                <td>{{ item.material.name }}</td>
-                <td id="quantity-{{ item.material.id }}">{{ item.base_quantity }}</td>
+                <td>{{ material.name }}</td>
+                <td id="quantity-{{ material.id }}">{{ material.inventory_level }}</td>
                 <td>
-                    <select hx-post="{% url 'change_unit' item.material.id %}" hx-target="#quantity-{{ item.material.id }}">
-                        {% for mu in item.units %}
-                        <option value="{{ mu.unitId.id }}">{{ mu.unitId.name }}</option>
+                    <select
+                            name="unit_id"
+                            hx-get="{% url 'get_inventory_in_unit' material.id %}"
+                            hx-trigger="change"
+                            hx-target="#quantity-{{ material.id }}"
+                            hx-swap="innerHTML"
+                    >
+                        {% for mu in material.units.all %}
+                            <option value="{{ mu.id }}"
+                                    {% if mu == material.base_unitId %}selected{% endif %}>{{ mu.name }}
+                            </option>
                         {% endfor %}
                     </select>
                 </td>
+
+                <td>
+
+                </td>
+
             </tr>
-            {% endfor %}
+        {% endfor %}
         </tbody>
     </table>
-    <a href="{% url 'add_transaction' %}">Thêm giao dịch</a>
-{#    <a href="{% url 'transaction_history' %}">Lịch sử giao dịch</a>#}
+    <br>
+    <a href="{% url 'transaction_history' %}">Lịch sử nhập xuất</a>
 {% endblock %}

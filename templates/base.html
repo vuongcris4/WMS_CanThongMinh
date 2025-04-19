@@ -1,36 +1,36 @@
 <!DOCTYPE html>
 <html lang="vi">
+{% load static %}
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đồ án cân thông minh</title>
-  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
-{#    <style>#}
-{#        .tab-bar {#}
-{#            display: flex;#}
-{#            gap: 10px;#}
-{#            margin-bottom: 20px;#}
-{#        }#}
-{#        .tab-bar a {#}
-{#            padding: 10px;#}
-{#            background-color: #f0f0f0;#}
-{#            text-decoration: none;#}
-{#            color: black;#}
-{#        }#}
-{#        .tab-bar a.active {#}
-{#            background-color: #ccc;#}
-{#        }#}
-{#    </style>#}
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+
+    {#    Thu viện để select multiple date#}
+    <script src="{% static 'flatpickr/dist/flatpickr.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'flatpickr/dist/flatpickr.min.css' %}">
+
 </head>
+
 <body>
-    <div class="tab-bar">
-        <a href="{% url 'material_list' %}">Quản lý nguyên vật liệu</a>
-        <a href="{% url 'inventory' %}">Nhập xuất tồn</a>
-        <a href="{% url 'add_unit' %}">Khai báo đơn vị</a>
-    </div>
-    <div id="content">
-        {% block content %}
-        {% endblock %}
-    </div>
+<div class="tab-bar">
+    <a href="{% url 'material_list' %}">Quản lý nguyên vật liệu</a>
+    <a href="{% url 'inventory' %}">Nhập xuất tồn</a>
+    <a href="{% url 'add_unit' %}">Khai báo đơn vị</a>
+</div>
+<div id="content">
+    {% block content %}
+    {% endblock %}
+</div>
+
+{#<input id="myID"></input>#}
+{##}
+
+
+
+
 </body>
+
 </html>
