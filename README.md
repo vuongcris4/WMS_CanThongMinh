@@ -1,7 +1,7 @@
 
 
 
-**Hệ thống cân thông minh sử dụng trong quản lý kho** cho doanh nghiệp sản xuất, hỗ trợ nhập – xuất – tồn vật tư nhỏ dựa trên khối lượng, mã QR, và định mức kỹ thuật.
+**Hệ thống cân thông minh sử dụng trong quản lý kho** cho doanh nghiệp sản xuất, hỗ trợ nhập – xuất – tồn vật tư nhỏ dựa trên khối lượng, mã QR, và bảng quy đổi đơn vị.
 ## 🔧 Tính năng nổi bật
 
 - Nhận dạng vật tư bằng mã QR (ESP32-CAM).
@@ -10,6 +10,11 @@
 - Quản lý danh sách vật tư, đơn vị, định mức và lịch sử giao dịch.
 - Giao diện web hiện đại, responsive (Django + HTMX + DaisyUI).
 
+[//]: # (## 📁 Video demo)
+
+
+
+---
 ## 🚀 Cài đặt & chạy dự án
 
 ### 1. Clone project
@@ -74,23 +79,7 @@ Sau đó truy cập:
 
 ---
 
-## 📁 Kiến trúc hệ thống
 
-**Phần cứng:**
-
-* ESP32-CAM: quét QR, giao tiếp HTTP.
-* STM32: nhận tín hiệu loadcell, hiển thị LCD.
-* HX711: ADC cho loadcell.
-* LCD I2C 20x4: hiển thị tên, số lượng, thời gian.
-* Nút nhấn Nhập/Xuất vật tư.
-
-**Phần mềm:**
-
-* Django + HTMX + PostgreSQL.
-* REST API nhận dữ liệu từ ESP32.
-* Giao diện người dùng quản lý kho, vật tư, đơn vị, lịch sử.
-
----
 
 ## 📬 Liên hệ
 
