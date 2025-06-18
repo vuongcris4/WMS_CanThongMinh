@@ -1,0 +1,40 @@
+<table class="table">
+    <thead>
+    <tr>
+        <th>Tên</th>
+        <th>Tồn kho</th>
+        <th>Đơn vị</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for material in materials %}
+        <tr>
+            <td>{{ material.name }}</td>
+            {#        Lam tron 1 chu so thap pha#}
+            <td id="quantity-{{ material.id }}">{{ material.inventory_level|floatformat:1 }}</td>
+            <td>
+                <select
+                        name="unit_id"
+                        hx-get="{% url 'get_inventory_in_unit' material.id %}"
+                        hx-trigger="change"
+                        hx-target="#quantity-{{ material.id }}"
+                        hx-swap="innerHTML"
+
+                        class="menu dropdown-content bg-base-100 rounded-box z-1 p-2 shadow-sm"
+                >
+                    {% for mu in material.units.all %}
+                        <option value="{{ mu.id }}"
+                                {% if mu == material.base_unitId %}selected{% endif %}>{{ mu.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </td>
+
+            <td>
+
+            </td>
+
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

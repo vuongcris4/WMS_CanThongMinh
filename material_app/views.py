@@ -9,24 +9,41 @@ from datetime import datetime, timedelta
 """
 Trả về màn hình chính
 """
+
+
 def material_list(request):
     materials = Material.objects.all()
-    return render(request, 'materials/material_list.html', {'materials': materials})
+    context = {
+        'materials': materials,
+        'form': MaterialForm()
+    }
+    return render(request, 'materials/material_list.html', context)
+
 
 """
 Nếu GET: trả về form nhập
 Nếu POST: Save vào form và quay về màn hình list
 """
+
+
 def add_material(request):
     if request.method == 'POST':
         form = MaterialForm(request.POST)
         # print(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('material_list')
-    else:
-        form = MaterialForm()
-    return render(request, 'materials/add_material.html', {'form': form})
+
+            materials = Material.objects.all()
+            context = {
+                'materials': materials,
+            }
+            response = render(request, 'materials/partial/material_table.html', context)
+            response['HX-Trigger'] = 'success'
+            return response
+    # else:
+    #     form = MaterialForm()
+    # return render(request, 'materials/add_material.html', {'form': form})
+
 
 """
 Quy đổi đơn vị cho ốc vít
@@ -41,6 +58,8 @@ Thêm đơn vị quy đổi cho ốc vít
 Nếu POST: trả về list units theo Material
 Nếu GET: render Manage_Units, và form nhập
 """
+
+
 def manage_units(request, material_id):
     material = get_object_or_404(Material, id=material_id)
 
@@ -65,6 +84,8 @@ def manage_units(request, material_id):
 Nếu GET: Render add_unit.html, có thêm đơn vị và load danh sách đơn vị
 Nếu POST: trả vể cụ unit_list.html để HTMX vào id của page add_unit
 """
+
+
 def add_unit(request):
     if request.method == 'POST':
         form = UnitForm(request.POST)
@@ -77,12 +98,16 @@ def add_unit(request):
     units = Unit.objects.all()
     return render(request, 'units/add_unit.html', {'form': form, 'units': units})
 
+
 """
 Load màn hình chính của tồn kho
 """
+
+
 def inventory(request):
     materials = Material.objects.all()
     return render(request, 'inventory/inventory.html', {'materials': materials})
+
 
 """
 Khi select đơn vị khác (vd trong tồn kho)
@@ -90,6 +115,8 @@ Khi select đơn vị khác (vd trong tồn kho)
 -> Tìm conversion_factor theo materialId và unitId
 -> Lấy inventory_level * conversion_factor
 """
+
+
 def get_inventory_in_selected_unit_view(request, material_id):
     selected_unit_id = request.GET['unit_id']
     material_unit = MaterialUnit.objects.get(materialId=material_id, unitId=selected_unit_id)
@@ -99,11 +126,15 @@ def get_inventory_in_selected_unit_view(request, material_id):
     inventory_level = material.inventory_level  # Lấy tồn kho theo base_unitId
 
     ton_kho = inventory_level * conversion_factor
+    ton_kho = "{:.1f}".format(ton_kho)     # Lam tron 1 chu so thap phan
     return HttpResponse(ton_kho)
+
 
 """
 Trả về lịch sử transactions
 """
+
+
 def transaction_history(request, material_id=None):
     if material_id:
         transactions = MaterialTransactions.objects.filter(materialId=material_id).order_by('-created_at')
@@ -111,19 +142,25 @@ def transaction_history(request, material_id=None):
         transactions = MaterialTransactions.objects.all().order_by('-created_at')
     return render(request, 'inventory/transaction_history.html', {'transactions': transactions})
 
+
 """
 Nếu GET: Lấy form thêm Nhập Xuất Tồn
 Nếu POST: Post Object đó vào database
 """
+
+
 def add_transaction(request):
     if request.method == 'POST':
-        form = MaterialTransactionForm(request.POST)
+        transaction_type = request.GET.get('transaction_type', 'import')
+        form = MaterialTransactionForm(request.POST, initial={'transaction_type': transaction_type})
         if form.is_valid():
             form.save()  # Khi save, chạy def save base_quantity, sau đó tự kích hoạt signal tính tồn kho
             return redirect('inventory')
     else:
-        form = MaterialTransactionForm()
+        transaction_type = request.GET.get('transaction_type', 'import')
+        form = MaterialTransactionForm(request.GET, initial={'transaction_type': transaction_type})
     return render(request, 'inventory/add_transaction.html', {'form': form})
+
 
 def search_transaction_table(request):
     transaction_type = request.GET.get('transaction_type', '')
@@ -151,3 +188,20 @@ def search_transaction_table(request):
     transactions = MaterialTransactions.objects.filter(query).order_by('-created_at')
     context = {'transactions': transactions}
     return render(request, 'inventory/partial/transaction_table.html', context)
+
+def get_inventory(request):
+    materials = Material.objects.all()
+    return render(request, 'inventory/partial/inventory_table.html', {'materials': materials})
+
+def get_units_for_material(request):
+    material_id = request.GET.get('materialId')
+    if material_id:
+        material = Material.objects.get(id=material_id)
+        units = material.units.all()
+        return render(request, 'units/unit_options.html', {'units': units})
+    return HttpResponse('')
+
+def get_material_units(request):
+    material_id = request.GET.get('materialId')
+    material_units = MaterialUnit.objects.filter(materialId=material_id)
+    return render(request, 'materials/partial/material_units.html', {'material_units': material_units})

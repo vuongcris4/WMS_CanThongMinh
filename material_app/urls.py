@@ -3,7 +3,7 @@ from django.views.generic.base import RedirectView
 from . import views
 
 urlpatterns = [
-    path('', RedirectView.as_view(url='materials'), name='home'),
+    path('', RedirectView.as_view(url='inventory'), name='home'),
 
     # Hiện trang chủ, danh sách Materials
     path('materials/', views.material_list, name='material_list'),
@@ -36,4 +36,9 @@ urlpatterns = [
 
     path('inventory/search_transaction_table', views.search_transaction_table, name='search_transaction_table'),
 
+    path('inventory/get_inventory/', views.get_inventory, name='get_inventory'),
+
+    # Lấy đơn vị theo material
+    path('get_units_for_material/', views.get_units_for_material, name='get_units_for_material'),
+    path('get-material-units/', views.get_material_units, name='get_material_units'),
 ]

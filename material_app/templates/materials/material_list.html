@@ -1,31 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Danh sách nguyên vật liệu</h1>
+    <h1 class="text-4xl text-success mb-4">Danh sách nguyên vật liệu</h1>
 
-    <a href="{% url 'add_material' %}">Thêm nguyên vật liệu</a>
+{#    <button class="btn btn-success">#}
+{#        <a href="{% url 'add_material' %}">Thêm nguyên vật liệu</a>#}
+{#    </button>#}
+
+    <button class="btn btn-success" onclick="add_material_modal.showModal()">
+        Thêm nguyên vật liệu
+    </button>
+    {% include 'materials/add_material.html' %}
 
 
-    <table id="material-list">
-        <thead>
-            <tr>
-                <th>Tên</th>
-                <th>Đơn vị cơ bản</th>
-                <th>Thao tác</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for material in materials %}
-            <tr>
-                <td>{{ material.name }}</td>
-                <td>{{ material.base_unitId.name }}</td>
-                <td>
-{#                    <a href="{% url 'edit_material' material.id %}">Sửa</a>#}
-{#                    <a href="{% url 'delete_material' material.id %}">Xóa</a>#}
-                    <a href="{% url 'manage_units' material.id %}">Quy đổi đơn vị</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="overflow-x-auto">
+           {% include 'materials/partial/material_table.html' %}
+    </div>
+
+    </div>
+
 {% endblock %}

@@ -1,22 +1,43 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Quy đổi đơn vị cho {{ material.name }}</h1>
+    <div class="container mx-auto p-4">
+        <!-- Nút quay lại -->
+        <button class="btn btn-ghost mb-4" onclick="window.history.back()" aria-label="Go back">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 class="inline-block w-5 h-5 stroke-current">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+            Back
+        </button>
 
-    <div id="unit-list-quy-doi">
-        {% include 'materials/partial/material_units.html' %}
+        <!-- Tiêu đề chính -->
+        <h1 class="text-2xl font-bold mb-4">Quy đổi đơn vị cho {{ material.name }}</h1>
 
+        <!-- Container chính với responsive flexbox -->
+        <div class="flex flex-col md:flex-row gap-6">
+            <!-- Phần 1: Danh sách đơn vị quy đổi -->
+            <div class="flex-1">
+                <h2 class="text-xl font-semibold mb-2">Danh sách đơn vị quy đổi</h2>
+                <div id="unit-list-quy-doi" class="bg-base-100 p-4 rounded-lg shadow">
+                    {% include 'materials/partial/material_units.html' %}
+                </div>
+            </div>
+
+            <!-- Phần 2: Form thêm đơn vị quy đổi -->
+            <div class="flex-1">
+                <h2 class="text-xl font-semibold mb-2">Thêm đơn vị quy đổi cho {{ material.name }}</h2>
+                <form method="POST" hx-post="{% url 'manage_units' material.id %}" hx-target="#unit-list-quy-doi"
+                      hx-on::after-request="this.reset()" class="space-y-4">
+                    {% csrf_token %}
+                    <div class="form-control">
+                        {{ form.as_p }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Thêm đơn vị</button>
+                </form>
+            </div>
+        </div>
+
+{#        <div id="unit-list" class="mt-6"></div>#}
     </div>
-
-    <br>
-    <h2>Thêm đơn vị quy đổi cho {{ material.name }}</h2>
-
-{#    Post đến url gọi hàm manage_units, và apply cục trả về vô id #}
-    <form method="POST" hx-post="{% url 'manage_units' material.id %}" hx-target="#unit-list-quy-doi" hx-on::after-request="this.reset()">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Thêm đơn vị</button>
-    </form>
-
-    <div id="unit-list"></div>
 {% endblock %}

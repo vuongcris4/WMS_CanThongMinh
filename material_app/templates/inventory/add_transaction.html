@@ -1,25 +1,46 @@
-{% extends 'base.html' %}
+{#{% extends 'base.html' %}#}
 
 {% block content %}
-    <h1>Thêm giao dịch</h1>
-    <form method="POST">
+    {#    <h1>Thêm giao dịch</h1>#}
+    <form method="POST" action="{% url 'add_transaction' %}">
         {% csrf_token %}
         <div>
-            <label for="{{ form.materialId.id_for_label }}">Nguyên vâật liệu:</label>
+            <label id="name_material" for="{{ form.materialId.id_for_label }}">Nguyên vật liệu:</label>
             {{ form.materialId }}
+
+            <script>
+                document.getElementById('{{ form.materialId.id_for_label }}').setAttribute('hx-get', '{% url "get_units_for_material" %}');
+                document.getElementById('{{ form.materialId.id_for_label }}').setAttribute('hx-target', '#unit-select');
+                document.getElementById('{{ form.materialId.id_for_label }}').setAttribute('hx-trigger', 'change');
+                document.getElementById('{{ form.materialId.id_for_label }}').setAttribute('hx-swap', 'innerHTML');
+                {#document.getElementById('{{ form.materialId.id_for_label }}').setAttribute('name', 'material_id');#}
+                {#console.log({{form.materialId.name}})#}
+            </script>
+
         </div>
-         <div>
+
+{#        <div id="material-units-container">#}
+{#            <!-- Danh sách đơn vị quy đổi sẽ xuất hiện ở đây -->#}
+{#        </div>#}
+
+        <div>
             <label for="{{ form.unitId.id_for_label }}">Đơn vị:</label>
-            {{ form.unitId }}
+            <select id="unit-select" name="unitId" class="select select-bordered w-full">
+                <!-- Danh sách đơn vị sẽ được cập nhật động ở đây -->
+            </select>
         </div>
-         <div>
+
+        <div>
             <label for="{{ form.quantity.id_for_label }}">Số lượng:</label>
             {{ form.quantity }}
         </div>
-         <div>
+
+        <div>
             <label for="{{ form.transaction_type.id_for_label }}">Loại giao dịch:</label>
             {{ form.transaction_type }}
         </div>
-        <button type="submit">Lưu</button>
+        <button class="btn btn-success" type="submit">Lưu</button>
     </form>
+
+
 {% endblock %}

@@ -1,50 +1,60 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Lịch sử nhập xuất</h1>
+    <h1 class="text-3xl font-bold mb-4">Lịch sử nhập xuất</h1>
 
-    {#    Filter#}
-    <div>
-        <label>Loại Giao Dịch:</label>
-        <select name="transaction_type"
+    <!-- Container nhóm các trường filter -->
+    <div class="flex flex-wrap gap-4 mb-4">
+        <!-- Trường Loại Giao Dịch -->
+        <div class="form-control">
+            <label class="label">Loại Giao Dịch:</label>
+            <select class="select select-bordered" name="transaction_type"
+                    hx-get="{% url 'search_transaction_table' %}"
+                    hx-trigger="change"
+                    hx-target="#transaction_material_table"
+                    hx-swap="outerHTML"
+                    hx-include="#flatpickr-date, #search-material">
+                <option value="">-- Tất cả --</option>
+                <option value="import">Nhập</option>
+                <option value="export">Xuất</option>
+            </select>
+        </div>
+
+        <!-- Trường Chọn ngày -->
+        <div class="form-control">
+            <label class="label" for="flatpickr-date">Chọn ngày</label>
+            <input id="flatpickr-date" name="flatpickr-date" type="text" placeholder="Select Date.." data-id="range"
+                   readonly="readonly"
+                   class="input input-bordered"
+                   hx-get="{% url 'search_transaction_table' %}"
+                   hx-trigger="change"
+                   hx-target="#transaction_material_table"
+                   hx-swap="outerHTML"
+                   hx-include="[name='transaction_type'], #search-material">
+        </div>
+
+        <!-- Trường Tìm kiếm sản phẩm -->
+        <div class="form-control">
+            <label class="label" for="search-material">Tìm kiếm sản phẩm</label>
+            <input id="search-material" name="search_material" type="text" placeholder="Nhập tên sp"
+                   class="input input-bordered"
+                   hx-get="{% url 'search_transaction_table' %}"
+                   hx-trigger="keyup changed delay:200ms"
+                   hx-target="#transaction_material_table"
+                   hx-swap="outerHTML"
+                   hx-include="[name='transaction_type'], #flatpickr-date">
+        </div>
+
+        <!-- Nút Clear Filter -->
+        <button id="clear-filter-btn" class="btn btn-primary mt-6"
                 hx-get="{% url 'search_transaction_table' %}"
-                hx-trigger="change"
                 hx-target="#transaction_material_table"
-                hx-swap="outerHTML"
-                hx-include="#flatpickr-date, #search-material">
-            <option value="">-- Tất cả --</option>
-            <option value="import">Nhập</option>
-            <option value="export">Xuất</option>
-        </select>
+                hx-swap="outerHTML">
+            Clear Filter
+        </button>
     </div>
 
-    <div>
-        <label for="flatpickr-date">Chọn ngày</label>
-        <input id="flatpickr-date" name="flatpickr-date" type="text" placeholder="Select Date.." data-id="range"
-               readonly="readonly"
-               hx-get="{% url 'search_transaction_table' %}"
-               hx-trigger="change"
-               hx-target="#transaction_material_table"
-               hx-swap="outerHTML"
-               hx-include="[name='transaction_type'], #search-material">
-    </div>
-
-    <div>
-        <label for="search-material">Tìm kiếm sản phẩm</label>
-        <input id="search-material" name="search_material" type="text" placeholder="Nhập tên sp"
-               hx-get="{% url 'search_transaction_table' %}"
-               hx-trigger="keyup changed delay:200ms"
-               hx-target="#transaction_material_table"
-               hx-swap="outerHTML"
-               hx-include="[name='transaction_type'], #flatpickr-date">
-    </div>
-
-    <button id="clear-filter-btn" hx-get="{% url 'search_transaction_table' %}"
-            hx-target="#transaction_material_table"
-            hx-swap="outerHTML">
-        Clear Filter
-    </button>
-
+    <!-- Script để xử lý flatpickr và clear filter -->
     <script>
         flatpickr("#flatpickr-date", {
             mode: "range",

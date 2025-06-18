@@ -1,0 +1,54 @@
+<table id="material-list" class="table">
+    <thead>
+    <tr>
+        <th>Tên</th>
+        <th>Đơn vị cơ bản</th>
+        <th>Thao tác</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for material in materials %}
+        <tr class="hover:bg-base-300">
+            <td>{{ material.name }}</td>
+            <td>{{ material.base_unitId.name }}</td>
+            <td>
+                <button class="btn btn-soft btn-info">
+                    <a href="{% url 'manage_units' material.id %}">Quy đổi đơn vị</a>
+                </button>
+                <button class="btn btn-soft btn-qr" data-material-id="{{ material.id }}">QR</button>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<!-- Modal để hiển thị mã QR -->
+<dialog id="qr-modal" class="modal">
+    <div class="modal-box">
+        <button id="close-modal" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+        <div id="qr-code" class="w-64 h-64 mx-auto"></div>
+    </div>
+</dialog>
+
+<!-- Thư viện qrcode.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<!-- JavaScript xử lý sự kiện -->
+<script>
+document.querySelectorAll('.btn-qr').forEach(button => {
+    button.addEventListener('click', function() {
+        const materialId = this.getAttribute('data-material-id');
+        const qrCodeDiv = document.getElementById('qr-code');
+        qrCodeDiv.innerHTML = ''; // Xóa mã QR cũ nếu có
+        new QRCode(qrCodeDiv, {
+            text: materialId,
+            width: 256,
+            height: 256
+        });
+        document.getElementById('qr-modal').showModal(); // Hiển thị modal
+    });
+});
+
+document.getElementById('close-modal').addEventListener('click', function() {
+    document.getElementById('qr-modal').close(); // Ẩn modal
+});
+</script>

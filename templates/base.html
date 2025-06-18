@@ -1,36 +1,91 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html data-theme="light" lang="vi">
 {% load static %}
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đồ án cân thông minh</title>
+    <title>{% block title %}Đồ án quản lí kho{% endblock %}</title>
     <script src="https://unpkg.com/htmx.org@2.0.4"></script>
-
-    {#    Thu viện để select multiple date#}
     <script src="{% static 'flatpickr/dist/flatpickr.min.js' %}"></script>
     <link rel="stylesheet" href="{% static 'flatpickr/dist/flatpickr.min.css' %}">
-
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css"/>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
 <body>
-<div class="tab-bar">
-    <a href="{% url 'material_list' %}">Quản lý nguyên vật liệu</a>
-    <a href="{% url 'inventory' %}">Nhập xuất tồn</a>
-    <a href="{% url 'add_unit' %}">Khai báo đơn vị</a>
+<div class="drawer">
+    <input id="my-drawer-3" type="checkbox" class="drawer-toggle"/>
+    <div class="drawer-content flex flex-col">
+        <!-- Navbar -->
+        <div class="navbar bg-base-300 w-full">
+            <div class="flex-none lg:hidden">
+                <label for="my-drawer-3" aria-label="open sidebar" class="btn btn-square btn-ghost">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                         class="inline-block h-6 w-6 stroke-current">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </label>
+            </div>
+
+            <!-- Tiêu đề hoặc logo -->
+            <div class="flex-1">
+                <a class="btn btn-ghost text-xl" href="{% url 'inventory' %}">Đồ án quản lí kho</a>
+            </div>
+            <!-- Các tab trên navbar -->
+            <div class="hidden flex-none lg:block">
+                <ul class="menu menu-horizontal gap-4 items-center text-lg">
+                    <!-- Tab Nhập xuất tồn -->
+                    <li>
+                        <a href="{% url 'inventory' %}" class="{% if request.path == '/inventory/' %}active{% endif %}">Nhập
+                            xuất tồn</a>
+                    </li>
+                    <!-- Tab Lịch sử nhập xuất -->
+                    <li>
+                        <a href="{% url 'transaction_history' %}"
+                           class="{% if request.path == '/transaction_history/' %}active{% endif %}">Lịch sử nhập
+                            xuất</a>
+                    </li>
+                    <!-- Tab Quản lý (Dropdown) -->
+                    <li class="dropdown dropdown-end">
+                        <label tabindex="0" class="btn btn-ghost flex items-center text-lg">
+                            Quản lý
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </label>
+                        <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                            <li><a href="{% url 'material_list' %}"
+                                   class="{% if request.path == '/material_list/' %}active{% endif %}">Quản lý nguyên
+                                vật liệu</a></li>
+                            <li><a href="{% url 'add_unit' %}"
+                                   class="{% if request.path == '/add_unit/' %}active{% endif %}">Khai báo đơn vị</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="drawer-side">
+        <label for="my-drawer-3" aria-label="close sidebar" class="drawer-overlay"></label>
+        <ul class="menu bg-base-200 min-h-full w-80 p-4">
+            <!-- Sidebar content here -->
+            <li><a href="{% url 'inventory' %}">Nhập xuất tồn</a></li>
+            <li><a href="{% url 'transaction_history' %}">Lịch sử nhập xuất</a></li>
+            <li><a href="{% url 'material_list' %}">Quản lý nguyên vật liệu</a></li>
+            <li><a href="{% url 'add_unit' %}">Khai báo đơn vị</a></li>
+        </ul>
+    </div>
 </div>
-<div id="content">
+
+<div class="container mx-auto p-6">
     {% block content %}
     {% endblock %}
 </div>
 
-{#<input id="myID"></input>#}
-{##}
-
-
-
-
 </body>
-
 </html>

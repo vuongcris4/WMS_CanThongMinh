@@ -1,10 +1,53 @@
-{% extends 'base.html' %}
+<dialog id="add_material_modal" class="modal">
+    <div class="modal-box">
+        
+        <h3 class="font-bold text-lg mb-4">Thêm vật tư</h3>
 
-{% block content %}
-    <h1>Thêm nguyên vật liệu</h1>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Thêm</button>
-    </form>
-{% endblock %}
+        <form hx-post="{% url 'add_material' %}"
+            hx-target="#material-list"
+{#            hx-swap="afterbegin"#}
+            hx-encoding='multipart/form-data'
+            hx-on:success="add_material_modal.close(); this.reset();"
+            class="mb-4">
+            {% csrf_token %}
+
+            <div class="form-control w-full">
+            <label class="label" for="{{ form.name.id_for_label }}">
+                <span class="label-text">Nguyên vât liệu:</span>
+
+            </label>
+
+            {{ form.name }}
+
+            {% if form.name.errors %}
+                <label class="label text-error">
+                    {{ form.name.errors }}
+                </label>
+            {% endif %}        
+
+            </div>
+
+            <div class="form-control w-full">
+            <label class="label">
+                <span class="label-text">Đơn vị cơ bản</span>
+            </label>
+
+            {{ form.base_unitId }}
+
+            {% if form.base_unitId.errors %}
+                <label class="label text-error">
+                    {{ form.base_unitId.errors }}
+                </label>
+            {% endif %}        
+
+            </div>
+
+            <div class="modal-action">
+                <button type="button" class="btn"
+                    onclick="add_material_modal.close()">Hủy</button>
+                <button type="submit" class="btn btn-primary">Thêm vật tư</button>
+            </div>
+
+        </form>
+    </div>
+</dialog>

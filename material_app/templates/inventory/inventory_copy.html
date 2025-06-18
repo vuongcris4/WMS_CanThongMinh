@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <!-- name of each tab group should be unique -->
+    <div class="tabs tabs-border">
+        <input type="radio" name="my_tabs_2" class="tab" aria-label="Nhập kho"/>
+        <div class="tab-content border-base-300 bg-base-100 p-10">Nhập kho</div>
+
+        <input type="radio" name="my_tabs_2" class="tab" aria-label="Xuất kho" checked="checked"/>
+        <div class="tab-content border-base-300 bg-base-100 p-10">Xuất kho</div>
+
+        <input type="radio" name="my_tabs_2" class="tab" aria-label="Tồn kho"/>
+        <div class="tab-content border-base-300 bg-base-100 p-10">Tồn kho</div>
+    </div>
+
+    <h1>Tồn kho</h1>
+    <a href="{% url 'add_transaction' %}">Thêm giao dịch</a>
+    <br>
+
+    <br>
+    <a href="{% url 'transaction_history' %}">Lịch sử nhập xuất</a>
+{% endblock %}
