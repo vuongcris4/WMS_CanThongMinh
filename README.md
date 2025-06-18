@@ -10,8 +10,8 @@
 - Quản lý danh sách vật tư, đơn vị, định mức và lịch sử giao dịch.
 - Giao diện web hiện đại, responsive (Django + HTMX + DaisyUI).
 
-[//]: # (## 📁 Video demo)
-
+## 📁 Video demo
+👉 [Link Youtube](https://youtu.be/WrR_3SLUhm0)
 
 ## 🚀 Cài đặt & chạy dự án
 
