@@ -13,8 +13,6 @@
 [//]: # (## 📁 Video demo)
 
 
-
----
 ## 🚀 Cài đặt & chạy dự án
 
 ### 1. Clone project
@@ -22,7 +20,7 @@
 ```bash
 git clone git@github.com:vuongcris4/WMS_CanThongMinh.git
 cd can_thong_minh
-````
+```
 
 ### 2. Tạo và kích hoạt môi trường ảo
 
@@ -49,7 +47,7 @@ Sau đó truy cập:
 
 ## 🖼 Giao diện demo
 
-> 📌 Sau khi up hình ảnh vào thư mục `demo_images/`, bạn có thể thay đường dẫn tương ứng:
+[//]: # (> 📌 Sau khi up hình ảnh vào thư mục `demo_images/`, bạn có thể thay đường dẫn tương ứng:)
 
 ### 🌐 Trang quản lý nguyên vật liệu
 
