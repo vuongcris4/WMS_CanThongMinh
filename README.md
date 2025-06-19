@@ -33,7 +33,7 @@ cd WMS_CanThongMinh
 
 ```bash
 docker run --name postgres-canthongminh \
-  -e POSTGRES_DB=canthongminh_db \
+  -e POSTGRES_DB=can_thong_minh \
   -e POSTGRES_USER=postgres \
   -e POSTGRES_PASSWORD=yourpassword \
   -p 5432:5432 \
@@ -63,7 +63,7 @@ pip install -r requirements.txt
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'canthongminh_db',
+        'NAME': 'can_thong_minh',
         'USER': 'postgres',
         'PASSWORD': 'yourpassword',
         'HOST': 'localhost',
