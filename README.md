@@ -16,7 +16,7 @@ Hệ thống hỗ trợ **nhập – xuất – tồn vật tư nhỏ** dựa tr
 
 ## 📁 Video demo + Slide thuyết trình
 
-👉 [Xem trên YouTube](https://youtu.be/WrR_3SLUhm0)
+👉 [Video demo](https://youtu.be/WrR_3SLUhm0)
 
 👉 [Slide thuyết trình](https://1drv.ms/p/c/4627f3b13782d18f/EXAzNbkM-zZAh2r_2sI05fQBQBYqsEpl8ezFf2hHgqkfBw?e=lMKPtU)
 
