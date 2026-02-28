@@ -1,0 +1,14 @@
+{
+  "name": "wms-canthongminh",
+  "type": "web_service",
+  "env": "python",
+  "region": "singapore",
+  "ownerId": "tea-d6hee424d50c73f9k93g",
+  "repo": {
+    "url": "https://github.com/vuongcris4/WMS_CanThongMinh",
+    "branch": "main"
+  },
+  "buildCommand": "pip install -r requirements.txt",
+  "startCommand": "gunicorn can_thong_minh.wsgi:application --bind 0.0.0.0:$PORT",
+  "autoDeploy": true
+}

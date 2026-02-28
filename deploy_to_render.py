@@ -21,24 +21,24 @@ def create_render_service(api_key):
         "Content-Type": "application/json"
     }
     
-    # Create web service
+    # Create web service - using correct API format
     service_data = {
         "name": SERVICE_NAME,
         "type": "web",
         "env": "python",
         "region": REGION,
-        "plan": PLAN,
         "repo": {
             "url": f"https://github.com/{GITHUB_REPO}",
             "branch": "main"
         },
         "buildCommand": "pip install -r requirements.txt",
         "startCommand": "gunicorn can_thong_minh.wsgi:application --bind 0.0.0.0:$PORT",
-        "envVars": {
-            "PYTHON_VERSION": "3.12.0",
-            "DEBUG": "False",
-            "WEB_CONCURRENCY": "4"
-        }
+        "autoDeploy": True,
+        "envVars": [
+            {"key": "PYTHON_VERSION", "value": "3.12.0"},
+            {"key": "DEBUG", "value": "False"},
+            {"key": "WEB_CONCURRENCY", "value": "4"}
+        ]
     }
     
     print("🚀 Creating Render service...")
@@ -47,6 +47,9 @@ def create_render_service(api_key):
         headers=headers,
         json=service_data
     )
+    
+    if response.status_code == 400:
+        print(f"Debug: {response.text}")
     
     if response.status_code == 201:
         service = response.json()
