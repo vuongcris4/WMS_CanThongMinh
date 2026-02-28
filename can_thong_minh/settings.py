@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +21,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_3o)$41&2()4g1lee6806zx9pop(_j4__rjg8tazg#y)1x(a-z'
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-_3o)$41&2()4g1lee6806zx9pop(_j4__rjg8tazg#y)1x(a-z')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False').lower() in ('true', '1', 'yes')
 
-ALLOWED_HOSTS = ["*"]
+# Render will set this automatically
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',') if os.getenv('ALLOWED_HOSTS') else ['*']
 
 # Application definition
 
@@ -51,6 +53,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
 
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Static files serving
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -90,15 +93,12 @@ WSGI_APPLICATION = 'can_thong_minh.wsgi.application'
 #     }
 # }
 
+# Use DATABASE_URL from environment variable (for Render deployment)
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'can_thong_minh',
-        'USER': 'postgres',
-        'PASSWORD': 'Vuongtran123',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.config(
+        default=os.getenv('DATABASE_URL', 'postgres://postgres:Vuongtran123@localhost:5432/can_thong_minh'),
+        conn_max_age=600
+    )
 }
 
 # Password validation
