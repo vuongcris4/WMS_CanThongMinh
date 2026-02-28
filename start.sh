@@ -5,7 +5,7 @@ echo "🚀 Starting WMS Can Thong Minh..."
 
 # Run database migrations
 echo "📊 Running database migrations..."
-python manage.py migrate --noinput
+python manage.py migrate --noinput --verbosity=2
 
 # Collect static files
 echo "📁 Collecting static files..."
